@@ -8,6 +8,7 @@ import sub.StringConstants;
 import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Scanner;
@@ -18,6 +19,8 @@ public class Terminal {
     Scanner scanner;
     private final ClientInvoker clientInvoker;
     private final Client client;
+    private String login = "";
+    private String password = "";
 
 
     public Terminal(ClientInvoker clientInvoker, Client client) {
@@ -42,6 +45,8 @@ public class Terminal {
                     startFile(request.getArgument());
                     continue;
                 }
+                request.setLogin(login);
+                request.setPassword(password);
                 client.sendRequest(request);
                 Optional<Response> optionalResponse = client.getResponse();
                 if (!optionalResponse.isPresent()) {
@@ -57,7 +62,8 @@ public class Terminal {
     public void inputKeyboard() throws JAXBException, NoSuchElementException {
         this.scanner = new Scanner(System.in);
 
-        System.out.println(StringConstants.StartTreatment.START_HELPER);
+
+        helloUser();
 
         while (true) {
             System.out.println(StringConstants.StartTreatment.ENTER_COMMAND);
@@ -75,6 +81,8 @@ public class Terminal {
                         scanner = new Scanner(System.in);
                         continue;
                     }
+                    request.setLogin(login);
+                    request.setPassword(password);
                     client.sendRequest(request);
 
                     Optional<Response> optionalResponse = client.getResponse();
@@ -104,6 +112,46 @@ public class Terminal {
             return Optional.empty();
         }
     }
+
+    private void authorization(){
+        System.out.println("Введите логин:");
+        login = scanner.nextLine();
+        System.out.println("Введите пароль:");
+        password = scanner.nextLine();
+        Request authorizateRequest = new Request("authorization");
+        authorizateRequest.setLogin(login);
+        authorizateRequest.setPassword(password);
+        client.sendRequest(authorizateRequest);
+        Optional<Response> optionalResponse = client.getResponse();
+        if (optionalResponse.isPresent()){
+            Response response = optionalResponse.get();
+            if (!response.getMessage().isEmpty()){
+                System.out.println(response.getMessage());
+                authorization();
+            }
+        }
+    }
+
+    private void helloUser(){
+        System.out.println("Вы хотите авторизоваться? [yes/no] ");
+        while (true) {
+            System.out.println(">");
+            String answer = scanner.nextLine().trim().toLowerCase(Locale.ROOT);
+            if (answer.equals("yes")){
+                authorization();
+                System.out.println("Вы вошли в систему под именем:" + login);
+                return;
+            }else if (answer.equals("no")){
+                System.out.println("Вы вошли в систему как гость");
+                return;
+            }
+            System.out.println("[yes/no]");
+        }
+    }
+
+
+
+
 
     private void setScanner(String filename) {
         File file = new File(filename).getAbsoluteFile();

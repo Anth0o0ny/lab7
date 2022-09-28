@@ -13,6 +13,8 @@ public class Request implements Serializable {
     private final String argument;
     private final Movie movie;
     private SocketAddress clientAddres = null;
+    private String login;
+    private String password;
 
     public Request(String commandName, String argument, Movie movie) {
         this.commandName = commandName;
@@ -50,5 +52,21 @@ public class Request implements Serializable {
 
     public void setClientAddres(SocketAddress clientAddres) {
         this.clientAddres = clientAddres;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

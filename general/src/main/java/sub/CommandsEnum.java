@@ -16,7 +16,8 @@ public enum CommandsEnum {
     REMOVE_ALL_BY_SCREENWRITER("remove_all_by_screenwriter"),
     GROUP_COUNTING_BY_TAGLINE("group_counting_by_tagline"),
     PRINT_DESCENDING("print_descending"),
-    INFO("info");
+    INFO("info"),
+    AUTHORIZATION("authorization");
 
     public String commandName;
 

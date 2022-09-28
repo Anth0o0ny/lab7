@@ -133,4 +133,12 @@ public class Movie implements Comparable<Movie>, Serializable {
     public void setScreenwriter(Person screenwriter) {
         this.screenwriter = screenwriter;
     }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
 }

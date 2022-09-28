@@ -23,6 +23,8 @@ public class ServerMain {
 
         Server server = new Server();
 
+        serverReceiver.initCollection();
+
         while (true) {
 
             if (System.in.available() > 0) {

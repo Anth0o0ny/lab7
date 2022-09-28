@@ -13,11 +13,6 @@ import java.util.Stack;
 
 public class AddMovie {
 
-    private static IdGenerator idGenerator;
-
-    public static void setIdGenerator(IdGenerator idGenerator){
-        AddMovie.idGenerator = idGenerator;
-    }
 
     public static String addMovie(Stack<Movie> collection) {
         Movie makingMovie = makeMovie();
@@ -38,8 +33,6 @@ public class AddMovie {
     public static Movie makeMovie() {
 
         InputArgumentTester iat = new InputArgumentTester();
-
-//        long id = idGenerator.generateId();
 
         String name = iat.assignInputName() ;
         Double x = iat.assignInputX();

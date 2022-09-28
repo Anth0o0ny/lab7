@@ -7,28 +7,55 @@ import data.processing.MovieProcessing;
 import data.processing.UserProcessing;
 import interaction.Response;
 
-import moviemaking.IdGenerator;
 import sub.StringConstants;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 public class ServerReceiver {
 
-    private IdGenerator idGenerator;
-    private final Stack<Movie> collection;
+    private Stack<Movie> collection;
     private final Date creationDate;
     private final MoviesCollection mc;
-
+    private final MovieProcessing movieProcessing = new MovieProcessing();
+    private final UserProcessing userProcessing = new UserProcessing();
 
     public ServerReceiver() {
 
         mc = new MoviesCollection();
         collection = mc.getCollection();
-        idGenerator = new IdGenerator(collection);
         creationDate = new Date();
-        MovieProcessing movieProcessing = new MovieProcessing();
-        UserProcessing userProcessing = new UserProcessing();
 
+
+    }
+
+    public Response authorization(String login, String password) {
+        if (login.isEmpty()) {
+            return new Response("Имя пользователя не может быть пустой строкой.");
+        }
+        try{
+            MessageDigest md = MessageDigest.getInstance("SHA_512");
+            byte[] messageDigest = md.digest(password.getBytes());
+            BigInteger no = new BigInteger(1, messageDigest);
+            String hashtext = no.toString(16);
+            while (hashtext.length() < 32){
+                hashtext = "0" + hashtext;
+            }
+            password = hashtext;
+        } catch (NoSuchAlgorithmException e) {
+            System.out.println("что-то с хэшированием");
+        }
+
+            if(userProcessing.checkExists(login, password)){
+                return new Response("");
+            }else if (userProcessing.checkImpostor(login, password)){
+               return  new Response(login + " : введен неверный пароль для логина" );
+            } else {
+                userProcessing.create(login, password);
+                return new Response("");
+            }
     }
 
     public Response info(){
@@ -144,18 +171,26 @@ public class ServerReceiver {
         }
     }
     //
-    public Response add(Movie movie) {
+    public Response add(Movie movie, String login) {
+        long id = movieProcessing.create(movie, login);
+        if (id > 0) {
+            movie.setId(id);
+            movie.setLogin(login);
+            collection.push(movie);
+            return new Response("фильм добавлен. id = " + id);
+        } else {
+            return new Response("фильм с таким же именем уже есть.");
+        }
 
-        long id = idGenerator.generateId();
-        movie.setId(id);
-        collection.push(movie);
-        return new Response(StringConstants.MovieMaking.ADD_SUCCESS);
+//        movie.setId();
+//        collection.push(movie);
+//        return new Response(StringConstants.MovieMaking.ADD_SUCCESS);
     }
 
     public Response addIfMin(Movie movie){
         if (movie.compareTo(Collections.min(collection)) < 0) {
-            long id = idGenerator.generateId();
-            movie.setId(id);
+//            long id = idGenerator.generateId();
+//            movie.setId(id);
             collection.push(movie);
             return  new Response(StringConstants.MovieMaking.ADD_SUCCESS);
         } else {
@@ -195,8 +230,8 @@ public class ServerReceiver {
             str = StringConstants.PatternCommands.RECEIVER_INSERT_AT_WRONG_RESULT;
         }else{
             if ((collection.size() - index > 0)){
-                long id = idGenerator.generateId();
-                movie.setId(id);
+//                long id = idGenerator.generateId();
+//                movie.setId(id);
                 collection.insertElementAt(movie,index);
 
                 str = StringConstants.PatternCommands.RECEIVER_INSERT_AT_RESULT;
@@ -210,6 +245,10 @@ public class ServerReceiver {
     public String save(){
 //        Parser.parsingToXml(mc);
         return StringConstants.PatternCommands.RECEIVER_SAVE_RESULT;
+    }
+
+    void initCollection(){
+        collection = movieProcessing.readAll();
     }
 }
 
