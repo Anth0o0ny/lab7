@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.util.Date;
 
 
 @XmlRootElement(name = "movie")
@@ -19,20 +20,9 @@ public class Movie implements Comparable<Movie>, Serializable {
     private String tagline; //Длина строки не должна быть больше 158, Поле может быть null
     private MpaaRating mpaaRating; //Поле может быть null
     private Person screenwriter;
+    private String login;
 
 
-    public Movie(long id, String name, Coordinates coordinates, java.util.Date creationDate, Long oscarsCount,
-                 long budget, String tagline, MpaaRating mpaaRating, Person screenwriter) {
-        setId(id);
-        setName(name);
-        setCoordinates(coordinates);
-        setCreationDate(creationDate);
-        setOscarsCount(oscarsCount);
-        setBudget(budget);
-        setTagline(tagline);
-        setMpaaRating(mpaaRating);
-        setScreenwriter(screenwriter);
-    }
     public Movie(String name, Coordinates coordinates, java.util.Date creationDate, Long oscarsCount,
                  long budget, String tagline, MpaaRating mpaaRating, Person screenwriter) {
         setName(name);
@@ -44,7 +34,22 @@ public class Movie implements Comparable<Movie>, Serializable {
         setMpaaRating(mpaaRating);
         setScreenwriter(screenwriter);
     }
-    public Movie(){}
+    public Movie(long id, String name, Double x, Float y, Date creationDate, Long oscarCount, long budget,
+                 String tagline, String mpaaRating, String personName, float height, String hairColor,
+                 String nationality, String login){
+        this.id = id;
+        this.name = name;
+        this.coordinates = new Coordinates(x, y);
+        this.creationDate = creationDate;
+        this.oscarsCount = oscarCount;
+        this.budget = budget;
+        this.tagline = tagline;
+        this.mpaaRating = MpaaRating.fromString(mpaaRating);
+        this.screenwriter = new Person(personName, height, hairColor, nationality);
+        this.login = login;
+
+
+    }
 
 
     @Override

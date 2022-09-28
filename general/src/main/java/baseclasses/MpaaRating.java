@@ -21,5 +21,13 @@ public enum MpaaRating {
     public String toString() {
         return title;
     }
+
+    public static MpaaRating fromString(String mpaaStr) {
+        for (MpaaRating mpaaRating : MpaaRating.values()) {
+            if (mpaaRating.toString().equalsIgnoreCase(mpaaStr))
+                return mpaaRating;
+        }
+        return null;
+    }
 }
 

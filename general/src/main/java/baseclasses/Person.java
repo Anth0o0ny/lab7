@@ -20,7 +20,11 @@ public class Person implements Serializable {
         setNationality(nationality);
     }
 
-    public Person() {
+    public Person(String name, float height, String hairColor, String nationality) {
+        this.name = name;
+        this.height = height;
+        this.hairColor = Color.fromString(hairColor);
+        this.nationality = Country.fromString(nationality);
     }
 
     @Override

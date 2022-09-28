@@ -3,10 +3,11 @@ package server;
 import baseclasses.Movie;
 import baseclasses.MoviesCollection;
 import commands.ServerCommand;
+import data.processing.MovieProcessing;
+import data.processing.UserProcessing;
 import interaction.Response;
 
 import moviemaking.IdGenerator;
-import parse.Parser;
 import sub.StringConstants;
 
 import java.util.*;
@@ -22,11 +23,12 @@ public class ServerReceiver {
     public ServerReceiver() {
 
         mc = new MoviesCollection();
-//        pathToFile = System.getenv("pathToFile");
-//        Parser.parsingToObj(mc.getCollection(), pathToFile);
         collection = mc.getCollection();
         idGenerator = new IdGenerator(collection);
         creationDate = new Date();
+        MovieProcessing movieProcessing = new MovieProcessing();
+        UserProcessing userProcessing = new UserProcessing();
+
     }
 
     public Response info(){

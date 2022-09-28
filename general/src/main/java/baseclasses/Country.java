@@ -22,4 +22,11 @@ public enum Country {
         return title;
     }
 
+    public static Country fromString(String countryStr) {
+        for (Country country : Country.values()) {
+            if (country.toString().equalsIgnoreCase(countryStr))
+                return country;
+        }
+        return null;
+    }
 }
