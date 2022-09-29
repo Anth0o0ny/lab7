@@ -79,7 +79,7 @@ public class MovieProcessing extends Database implements MovieDAO {
                 Double x = resultSet.getDouble("x");
                 Float y = resultSet.getFloat("y");
                 java.util.Date creationDate = resultSet.getDate("creation_date");
-                Long oscarCount = resultSet.getLong("oscar_count");
+                Long oscarCount = resultSet.getLong("oscars_count");
                 long budget = resultSet.getLong("budget");
                 String tagline = resultSet.getString("tagline");
                 String mpaaRating = resultSet.getString("mpaa_rating");
@@ -109,12 +109,12 @@ public class MovieProcessing extends Database implements MovieDAO {
     }
 
     private enum SQLMovie {
-        INSERT("insert into movies (name, x, y, creation_date, oskar_count, budget, tagline, mpaa_rating, "
+        INSERT("insert into movies (name, x, y, creation_date, oscars_count, budget, tagline, mpaa_rating, "
                 + "person_name, person_height, hair_color, person_nationality, login) "
                 + "values (?,?,?,?,?,?,?,?,?,?,?,?,?) returning id;"),
         READ_ALL("select * from movies;"),
         INIT("create table if not exists movies(id serial not null primary key, name varchar(50) not null unique, "
-                + "x double precision not null, y double precision not null, creation_date date, oskar_count bigint, budget bigint, "
+                + "x double precision not null, y double precision not null, creation_date date, oscars_count bigint, budget bigint, "
                 + "tagline varchar(50), mpaa_rating varchar(50), person_name varchar(50), person_height float, "
                 + "hair_color varchar(50), person_nationality varchar(20), login varchar(50), "
                 + "foreign key (login) references users (login));");

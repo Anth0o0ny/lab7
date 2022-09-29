@@ -36,7 +36,7 @@ public class ServerReceiver {
             return new Response("Имя пользователя не может быть пустой строкой.");
         }
         try{
-            MessageDigest md = MessageDigest.getInstance("SHA_512");
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
             byte[] messageDigest = md.digest(password.getBytes());
             BigInteger no = new BigInteger(1, messageDigest);
             String hashtext = no.toString(16);
@@ -45,7 +45,8 @@ public class ServerReceiver {
             }
             password = hashtext;
         } catch (NoSuchAlgorithmException e) {
-            System.out.println("что-то с хэшированием");
+            e.printStackTrace();
+//            System.out.println("что-то с хэшированием");
         }
 
             if(userProcessing.checkExists(login, password)){
