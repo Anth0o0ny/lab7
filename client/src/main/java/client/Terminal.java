@@ -38,7 +38,8 @@ public class Terminal {
             String line = scanner.nextLine();
             Optional<Request> optRequest = lineParseToCommand(line);
             if (!optRequest.isPresent()) {
-                System.out.println();
+                System.out.println(StringConstants.Commands.EXECUTE_RECURSION);
+                return;
             } else {
                 Request request = optRequest.get();
                 if (request.getCommandName().equals("execute_script")) {
@@ -67,6 +68,7 @@ public class Terminal {
 
         while (true) {
             System.out.println(StringConstants.StartTreatment.ENTER_COMMAND);
+            System.out.print(">");
             String commandLine = scanner.nextLine();
             if (client.isConnected()) {
                 Optional<Request> optionalRequest = lineParseToCommand(commandLine);
@@ -115,8 +117,10 @@ public class Terminal {
 
     private void authorization(){
         System.out.println("Введите логин:");
+        System.out.print(">");
         login = scanner.nextLine();
         System.out.println("Введите пароль:");
+        System.out.print(">");
         password = scanner.nextLine();
         Request authorizateRequest = new Request("authorization");
         authorizateRequest.setLogin(login);
@@ -133,19 +137,19 @@ public class Terminal {
     }
 
     private void helloUser(){
-        System.out.println("Вы хотите авторизоваться? [yes/no] ");
+        System.out.println("Вы хотите авторизоваться? [y/n] ");
         while (true) {
-            System.out.println(">");
+            System.out.print(">");
             String answer = scanner.nextLine().trim().toLowerCase(Locale.ROOT);
-            if (answer.equals("yes")){
+            if (answer.equals("y")){
                 authorization();
                 System.out.println("Вы вошли в систему под именем:" + login);
                 return;
-            }else if (answer.equals("no")){
+            }else if (answer.equals("n")){
                 System.out.println("Вы вошли в систему как гость");
                 return;
             }
-            System.out.println("[yes/no]");
+            System.out.println("[y/n]");
         }
     }
 

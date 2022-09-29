@@ -7,7 +7,6 @@ public enum CommandsEnum {
     UPDATE("update"),
     REMOVE_BY_ID("remove_by_id"),
     CLEAR("clear"),
-    SAVE("save"),
     EXECUTE_SCRIPT("execute_script"),
     EXIT("exit"),
     INSERT_AT("insert_at"),

@@ -15,7 +15,7 @@ public class RemoveById extends ServerCommand{
 
     @Override
     public Optional<Response> execute(Request arg) {
-        return Optional.of(serverReceiver.removeById(arg.getArgument()));
+        return Optional.of(serverReceiver.removeById(arg.getArgument(), arg.getLogin()));
     }
 
     @Override

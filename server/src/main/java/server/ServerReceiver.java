@@ -35,12 +35,12 @@ public class ServerReceiver {
         if (login.isEmpty()) {
             return new Response("Имя пользователя не может быть пустой строкой.");
         }
-        try{
+        try {
             MessageDigest md = MessageDigest.getInstance("SHA-512");
             byte[] messageDigest = md.digest(password.getBytes());
             BigInteger no = new BigInteger(1, messageDigest);
             String hashtext = no.toString(16);
-            while (hashtext.length() < 32){
+            while (hashtext.length() < 32) {
                 hashtext = "0" + hashtext;
             }
             password = hashtext;
@@ -49,19 +49,19 @@ public class ServerReceiver {
 //            System.out.println("что-то с хэшированием");
         }
 
-            if(userProcessing.checkExists(login, password)){
-                return new Response("");
-            }else if (userProcessing.checkImpostor(login, password)){
-               return  new Response(login + " : введен неверный пароль для логина" );
-            } else {
-                userProcessing.create(login, password);
-                return new Response("");
-            }
+        if (userProcessing.checkExists(login, password)) {
+            return new Response("");
+        } else if (userProcessing.checkImpostor(login, password)) {
+            return new Response(login + " : введен неверный пароль для логина");
+        } else {
+            userProcessing.create(login, password);
+            return new Response("");
+        }
     }
 
-    public Response info(){
+    public Response info() {
         String[] information = new String[3];
-        information[0] = StringConstants.PatternCommands.RECEIVER_INFO_TYPE_COLLECTION  + collection.getClass();
+        information[0] = StringConstants.PatternCommands.RECEIVER_INFO_TYPE_COLLECTION + collection.getClass();
         information[1] = StringConstants.PatternCommands.RECEIVER_INFO_AMOUNT + collection.size();
         information[2] = StringConstants.PatternCommands.RECEIVER_INFO_INITIALIZATION_DATE + creationDate;
         return new Response(information);
@@ -71,18 +71,22 @@ public class ServerReceiver {
         return new Response(commandMap.values().stream().map(ServerCommand::getHelp).toArray(String[]::new));
     }
 
-    public Response show(){
+    public Response show() {
         return new Response(collection.stream().map(Movie::toString).toArray(String[]::new));
     }
 
-    public Response clear(){
-        collection.clear();
-        return new Response(StringConstants.PatternCommands.RECEIVER_CLEAR_RESULT);
+    public Response clear(String login) {
+        if (movieProcessing.clear(login)) {
+            collection.removeIf(movie -> movie.getLogin().equals(login));
+            return new Response(StringConstants.PatternCommands.RECEIVER_CLEAR_RESULT);
+        } else {
+            return new Response("Нет прав");
+        }
     }
 
-    public Response shuffle(){
+    public Response shuffle() {
         if (collection.isEmpty()) {
-            return new Response(StringConstants.PatternCommands.RECEIVER_EMPTY_COLLECTION_RESULT)   ;
+            return new Response(StringConstants.PatternCommands.RECEIVER_EMPTY_COLLECTION_RESULT);
         } else {
             Collections.shuffle(collection);
             StringBuilder stringBuilder = new StringBuilder();
@@ -107,7 +111,7 @@ public class ServerReceiver {
             return new Response(stringBuilder.toString());
         }
     }
-    //
+
     public Response groupCountingByTagline() {
         if (collection.isEmpty()) {
             return new Response(StringConstants.PatternCommands.RECEIVER_EMPTY_COLLECTION_RESULT);
@@ -125,52 +129,31 @@ public class ServerReceiver {
         }
     }
 
-    public Response removeById(String argument) {
-        String str = "";
-
+    public Response removeById(String argument, String login) {
+        long id;
         try {
-           long id = Long.parseLong(argument);
-        } catch (NumberFormatException e){
+            id = Long.parseLong(argument);
+        } catch (NumberFormatException e) {
             return new Response("Клиент передал невалидный id.");
         }
-        if (collection.isEmpty()) {
-            return new Response(StringConstants.PatternCommands.RECEIVER_EMPTY_COLLECTION_RESULT);
+        if (movieProcessing.removeById(id, login)) {
+            collection.removeIf(movie -> movie.getId().equals(id));
+            return new Response(id + ": фильм с данным id удален.");
         } else {
-            for (Movie movie : collection) {
-                if (String.valueOf(movie.getId()).equals(argument)) {
-                    collection.remove(movie);
-                    str = StringConstants.PatternCommands.RECEIVER_REMOVE_BY_ID_ACTION + argument + ".";
-                    break;
+            return new Response("Ошибка удаления по id");
+        }
+    }
 
-                } else {
-                    str = StringConstants.PatternCommands.RECEIVER_REMOVE_BY_ID_WRONG_ACTION;
-                }
-            }
-            return new Response(str);
-        }
-    }
-    //
-    public Response removeAllByScreenwriter(String arg) {
-        boolean flag = false;
-        if (collection.isEmpty()) {
-            return new Response(StringConstants.PatternCommands.RECEIVER_EMPTY_COLLECTION_RESULT);
+    public Response removeAllByScreenwriter(String arg, String login) {
+        if (movieProcessing.removeAllByScreenwriter(arg, login)) {
+            collection.removeIf(movie -> movie.getScreenwriter().getName().equals(arg) &&
+                    movie.getLogin().equals(login));
+            return new Response(StringConstants.PatternCommands.RECEIVER_REMOVE_ALL_BY_SCREENWRITER_RESULT + arg);
         } else {
-            List<Movie> found = new ArrayList<>();
-            for (Movie movie : collection) {
-                if (String.valueOf(movie.getScreenwriter()).equals(arg)) {
-                    System.out.println(movie);
-                    found.add(movie);
-                    flag = true;
-                }
-            }
-            if (flag) {
-                collection.removeAll(found);
-                return new Response(StringConstants.PatternCommands.RECEIVER_REMOVE_ALL_BY_SCREENWRITER_RESULT + arg);
-            } else {
-                return new Response(StringConstants.PatternCommands.RECEIVER_REMOVE_ALL_BY_SCREENWRITER_WROMG_RESULT + arg) ;
-            }
+            return new Response(StringConstants.PatternCommands.RECEIVER_REMOVE_ALL_BY_SCREENWRITER_WROMG_RESULT + arg);
         }
     }
+
     //
     public Response add(Movie movie, String login) {
         long id = movieProcessing.create(movie, login);
@@ -182,70 +165,62 @@ public class ServerReceiver {
         } else {
             return new Response("фильм с таким же именем уже есть.");
         }
-
-//        movie.setId();
-//        collection.push(movie);
-//        return new Response(StringConstants.MovieMaking.ADD_SUCCESS);
     }
 
-    public Response addIfMin(Movie movie){
+    public Response addIfMin(Movie movie, String login) {
         if (movie.compareTo(Collections.min(collection)) < 0) {
-//            long id = idGenerator.generateId();
-//            movie.setId(id);
+            long id = movieProcessing.create(movie, login);
+            movie.setId(id);
+            movie.setLogin(login);
             collection.push(movie);
-            return  new Response(StringConstants.MovieMaking.ADD_SUCCESS);
+            return new Response(StringConstants.MovieMaking.ADD_SUCCESS);
         } else {
             return new Response(StringConstants.MovieMaking.ADD_FAIL);
         }
     }
 
-    public Response update(String arg, Movie movie){
-        String str = "";
+    public Response update(String arg, Movie movie, String login) {
+        long id;
+        try {
+            id = Long.parseLong(arg);
+        } catch (NumberFormatException e) {
+            return new Response("Клиент передал невалидный id.");
+        }
+        if (movieProcessing.update(id, movie, login)){
+            collection.removeIf(movieColl -> movieColl.getId().equals(id));
+            movie.setId(id);
+            movie.setLogin(login);
+            collection.add(movie);
+            return new Response(StringConstants.PatternCommands.RECEIVER_UPDATE_RESULT + id);
+        } else {
+            return new Response(StringConstants.PatternCommands.RECEIVER_UPDATE_WRONG_RESULT);
+        }
+    }
 
-        for (Movie movie1 : collection) {
+    public Response insertAt(String argument, Movie movie, String login){
 
-            if (String.valueOf(movie1.getId()).equals(arg)) {
-
-                  long id = movie1.getId();
-
-                  movie.setId(id);
-                  collection.setElementAt(movie, (collection.size() - collection.search(movie1)));
-
-                  str = StringConstants.PatternCommands.RECEIVER_UPDATE_RESULT + id;
-
-                break;
+        int index;
+        try {
+            index = Integer.parseInt(argument) - 1;
+        } catch (NumberFormatException e){
+            return new Response("Клиент передал невалидный индекс.");
+        }
+        if (index < 0 && (collection.size() - index > 0)){
+            return new Response(StringConstants.PatternCommands.RECEIVER_INSERT_AT_WRONG_RESULT);
+        }else {
+            long id = movieProcessing.create(movie, login);
+            if (id > 0) {
+                movie.setId(id);
+                movie.setLogin(login);
+                collection.insertElementAt(movie, index);
+                return new Response("фильм с id = " + id + " добавлен в коллекцию на позицию = " + (index + 1)+
+                        "\n" + "База данных не поддерживает вставку в конкретную позицию, поэтому в базу данных " +
+                        "элемент добавлен последним.");
 
             } else {
-
-                str = StringConstants.PatternCommands.RECEIVER_UPDATE_WRONG_RESULT;
-
+                return new Response("фильм с таким же именем уже есть.");
             }
-        } return new Response(str);
-    }
-
-    public Response insertAt(String argument, Movie movie){
-
-        String str;
-        int index = Integer.parseInt(argument);
-        if (index < 0 ){
-            str = StringConstants.PatternCommands.RECEIVER_INSERT_AT_WRONG_RESULT;
-        }else{
-            if ((collection.size() - index > 0)){
-//                long id = idGenerator.generateId();
-//                movie.setId(id);
-                collection.insertElementAt(movie,index);
-
-                str = StringConstants.PatternCommands.RECEIVER_INSERT_AT_RESULT;
-            } else{
-                str = StringConstants.PatternCommands.RECEIVER_INSERT_AT_WRONG_RESULT;
-            }
-
         }
-        return new Response(str);
-    }
-    public String save(){
-//        Parser.parsingToXml(mc);
-        return StringConstants.PatternCommands.RECEIVER_SAVE_RESULT;
     }
 
     void initCollection(){

@@ -75,7 +75,6 @@ public class ServerInvoker {
                 return Optional.of(new PrintDescending(serverReceiver));
             case AUTHORIZATION:
                 return Optional.of(new Authorization(serverReceiver));
-            case SAVE:
             default:
                 Optional.empty();
         }

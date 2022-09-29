@@ -62,7 +62,7 @@ public class Movie implements Comparable<Movie>, Serializable {
         return "Фильм: " + name + ", id = " + id;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

@@ -17,7 +17,7 @@ public class RemoveAllByScreenwriter extends ServerCommand{
 
     @Override
     public Optional<Response> execute(Request arg) {
-        return Optional.of(serverReceiver.removeAllByScreenwriter(arg.getArgument()));
+        return Optional.of(serverReceiver.removeAllByScreenwriter(arg.getArgument(), arg.getLogin()));
     }
 
     @Override

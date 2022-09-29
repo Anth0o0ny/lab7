@@ -15,7 +15,7 @@ public class AddIfMin extends ServerCommand{
 
     @Override
     public Optional<Response> execute(Request arg) {
-        return Optional.of(serverReceiver.addIfMin(arg.getMovie()));
+        return Optional.of(serverReceiver.addIfMin(arg.getMovie(), arg.getLogin()));
     }
 
     @Override

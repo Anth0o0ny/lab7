@@ -15,7 +15,7 @@ public Clear(ServerReceiver serverReceiver){
 
     @Override
     public Optional<Response> execute(Request arg) {
-        return Optional.of(serverReceiver.clear());
+        return Optional.of(serverReceiver.clear(arg.getLogin()));
     }
 
     @Override

@@ -15,7 +15,7 @@ public class InsertAt extends ServerCommand{
 
     @Override
     public Optional<Response> execute(Request arg) {
-        return Optional.of(serverReceiver.insertAt(arg.getArgument(), arg.getMovie()));
+        return Optional.of(serverReceiver.insertAt(arg.getArgument(), arg.getMovie(), arg.getLogin()));
     }
 
     @Override

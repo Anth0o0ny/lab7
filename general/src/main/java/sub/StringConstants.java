@@ -34,6 +34,7 @@ public class StringConstants {
 
         public final static String EXECUTE_SCRIPT_HELP = "считать и исполнить скрипт из указанного файла.";
         public final static String EXECUTE_FILE_NOT_EXISTS = "Файл не найден.";
+        public final static String EXECUTE_RECURSION = "Обнаружена рекурсия.";
     }
 
     public class MovieMaking {
@@ -98,7 +99,7 @@ public class StringConstants {
     public class Server{
         public final static String START_SERVER = "Сервер начал свою работу.";
         public final static String EXIT_RESULT = "Сервер завершил свою работу.";
-        public final static String WRONG_COMMAND = "Сервер поддерживает только две команды: save и exit.";
+        public final static String WRONG_COMMAND = "Сервер поддерживает только команду \"exit.\"";
 
         public final static String CHANNEL_REGISTERED = "Канал зарегистрирован. ";
         public final static String CHANNEL_REGISTER_CANCELED = "Ошибка в регистрации канала.";

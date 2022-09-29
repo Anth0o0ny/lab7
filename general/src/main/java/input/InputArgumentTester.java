@@ -33,6 +33,7 @@ public class InputArgumentTester {
         String name;
         do {
             System.out.println(StringConstants.MovieMaking.ENTER_MOVIE_NAME);
+            System.out.print(">");
             try {
                 name = sc.nextLine();
                 if (name.isEmpty()) {
@@ -50,6 +51,7 @@ public class InputArgumentTester {
         Double x;
         do {
             System.out.println( StringConstants.MovieMaking.ENTER_COORDINATE + " x: ");
+            System.out.print(">");
             String inp = sc.nextLine();
             try {
                 x = Double.parseDouble(inp);
@@ -68,6 +70,7 @@ public class InputArgumentTester {
         Float y;
         do {
             System.out.println( StringConstants.MovieMaking.ENTER_COORDINATE + " y: ");
+            System.out.print(">");
             String inp = sc.nextLine();
             try {
                 y = Float.parseFloat(inp);
@@ -83,6 +86,7 @@ public class InputArgumentTester {
         Long oscCount;
         do {
             System.out.println(StringConstants.MovieMaking.ENTER_OSCAR_COUNT);
+            System.out.print(">");
             String inp = sc.nextLine();
             try {
                 oscCount = Long.parseLong(inp);
@@ -101,6 +105,7 @@ public class InputArgumentTester {
         long budget;
         do {
             System.out.println(StringConstants.MovieMaking.ENTER_BUDGET);
+            System.out.print(">");
             String inp = sc.nextLine();
             try {
                 budget = Long.parseLong(inp);
@@ -119,6 +124,7 @@ public class InputArgumentTester {
         String tagline;
         do {
             System.out.println(StringConstants.MovieMaking.ENTER_TAGLINE);
+            System.out.print(">");
             try {
                 tagline = sc.nextLine();
                 if (tagline.length() > 158) {
@@ -139,6 +145,7 @@ public class InputArgumentTester {
         MpaaRating res = null;
         do {
             System.out.println(StringConstants.MovieMaking.ENTER_MPAA_RATING);
+            System.out.print(">");
             for (byte i = 0; MpaaRating.values().length > i; i++) {
                 System.out.println((i + 1) + ". " + MpaaRating.values()[i]);
             }
@@ -161,6 +168,7 @@ public class InputArgumentTester {
         String name;
         do {
             System.out.println(StringConstants.MovieMaking.ENTER_PERSON_NAME);
+            System.out.print(">");
             try {
                 name = sc.nextLine();
                 if (name.isEmpty()) {
@@ -178,6 +186,7 @@ public class InputArgumentTester {
         float height;
         do {
             System.out.println(StringConstants.MovieMaking.ENTER_HEIGHT);
+            System.out.print(">");
             String inp = sc.nextLine();
             try {
                 height = Float.parseFloat(inp);
@@ -197,6 +206,7 @@ public class InputArgumentTester {
         Country res = null;
         do {
             System.out.println(StringConstants.MovieMaking.ENTER_COUNTRY);
+            System.out.print(">");
             for (byte i = 0; Country.values().length > i; i++) {
                 System.out.println((i + 1) + ". " + Country.values()[i]);
             }
@@ -222,6 +232,7 @@ public class InputArgumentTester {
 
         do {
             System.out.println(StringConstants.MovieMaking.ENTER_COLOR);
+            System.out.print(">");
             for (byte i = 0; Color.values().length > i; i++) {
                 System.out.println((i + 1) + ". " + Color.values()[i]);
             }

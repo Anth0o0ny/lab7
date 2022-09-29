@@ -15,7 +15,7 @@ public class Update extends ServerCommand{
 
     @Override
     public Optional<Response> execute(Request arg) {
-        return Optional.of(serverReceiver.update(arg.getArgument(), arg.getMovie() ));
+        return Optional.of(serverReceiver.update(arg.getArgument(), arg.getMovie(), arg.getLogin()));
     }
 
     @Override

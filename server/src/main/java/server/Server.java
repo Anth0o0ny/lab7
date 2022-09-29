@@ -45,7 +45,7 @@ public class Server {
             SocketChannel client = serverSocketChannel.accept();
             client.configureBlocking(false);
             client.register(selector, SelectionKey.OP_READ);
-            System.out.print(StringConstants.Server.CHANNEL_REGISTERED);
+            System.out.println(StringConstants.Server.CHANNEL_REGISTERED);
         }
         catch (IOException e) {
             System.out.println(StringConstants.Server.CHANNEL_REGISTER_CANCELED);

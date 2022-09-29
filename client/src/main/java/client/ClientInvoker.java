@@ -70,7 +70,6 @@ public class ClientInvoker {
             case PRINT_DESCENDING:
                 return Optional.of(new PrintDescending(clientReceiver));
             case AUTHORIZATION:
-            case SAVE:
             default:
                 return Optional.empty();
         }

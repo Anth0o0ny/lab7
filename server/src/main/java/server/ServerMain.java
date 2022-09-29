@@ -34,10 +34,7 @@ public class ServerMain {
                 } catch (NullPointerException e) {
                     return;
                 }
-                if (servcomment.equals("save")) {
-                    System.out.println(serverReceiver.save());
-                }
-                else if (servcomment.equals("exit")) {
+                if (servcomment.equals("exit")) {
                     System.out.println(StringConstants.Server.EXIT_RESULT);
                     System.exit(0);
                 } else {
