@@ -11,12 +11,9 @@ import java.nio.channels.*;
 import java.util.concurrent.RecursiveAction;
 
 public class Server {
-//    private final Integer PORT = 8013;
     private static final int BUFFER_SIZE = 1024 * 1024;
     private Selector selector;
     private ServerSocketChannel serverSocketChannel;
-    private InputStream inputStream;
-    private ByteBuffer buffer;
 
 
     public Server() {

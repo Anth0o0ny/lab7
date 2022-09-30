@@ -145,10 +145,10 @@ public class InputArgumentTester {
         MpaaRating res = null;
         do {
             System.out.println(StringConstants.MovieMaking.ENTER_MPAA_RATING);
-            System.out.print(">");
             for (byte i = 0; MpaaRating.values().length > i; i++) {
                 System.out.println((i + 1) + ". " + MpaaRating.values()[i]);
             }
+            System.out.print(">");
             String inp = sc.nextLine();
 
             try {
@@ -206,10 +206,10 @@ public class InputArgumentTester {
         Country res = null;
         do {
             System.out.println(StringConstants.MovieMaking.ENTER_COUNTRY);
-            System.out.print(">");
             for (byte i = 0; Country.values().length > i; i++) {
                 System.out.println((i + 1) + ". " + Country.values()[i]);
             }
+            System.out.print(">");
             String inp = sc.nextLine();
             try {
                 countryNum = Byte.parseByte(inp);
@@ -232,10 +232,11 @@ public class InputArgumentTester {
 
         do {
             System.out.println(StringConstants.MovieMaking.ENTER_COLOR);
-            System.out.print(">");
+
             for (byte i = 0; Color.values().length > i; i++) {
                 System.out.println((i + 1) + ". " + Color.values()[i]);
             }
+            System.out.print(">");
             String inp = sc.nextLine();
             try {
                 colorNum = Byte.parseByte(inp);
