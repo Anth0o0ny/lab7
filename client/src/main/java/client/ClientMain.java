@@ -20,8 +20,6 @@ public class ClientMain {
         Terminal terminal = new Terminal(clientInvoker, client);
         try {
             terminal.inputKeyboard();
-        } catch (JAXBException e) {
-            System.out.println(StringConstants.StartTreatment.PARSE_FAILED);;
         }catch (NoSuchElementException ignore){
 
         } finally {

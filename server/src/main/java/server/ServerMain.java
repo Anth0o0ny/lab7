@@ -11,6 +11,8 @@ import java.util.Iterator;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.RecursiveAction;
 
 public class ServerMain {
 
@@ -18,7 +20,7 @@ public class ServerMain {
 
     private static final ServerInvoker serverInvoker = new ServerInvoker(serverReceiver);
 
-    public static void main(String[] args) throws IOException, JAXBException {
+    public static void main(String[] args) throws IOException {
 
 
         Server server = new Server();
@@ -49,33 +51,46 @@ public class ServerMain {
             Set<SelectionKey> keys = server.getSelector().selectedKeys();
             Iterator iterator = keys.iterator();
             while (iterator.hasNext()) {
-
-                if (parseComment() == 0){
+                if (parseComment() == 0) {
                     return;
-                }else{
-
+                } else {
                 }
-
-
                 SelectionKey key = (SelectionKey) iterator.next();
                 iterator.remove();
                 if (key.isAcceptable()) {
                     server.register();
                 } else if (key.isReadable()) {
-                    Request request = server.readRequest(key);
-                    if (request != null) {
-                        Optional<Response> optionalResponse = serverInvoker.execute(request);
+                    class Action extends RecursiveAction {
+                        @Override
+                        protected void compute() {
+                            Request request = server.readRequest(key);
+                            if (request != null) {
+                                class Action2 extends RecursiveAction {
+                                    @Override
+                                    protected void compute() {
+                                        Optional<Response> optionalResponse = null;
 
-                        if (optionalResponse.isPresent()) {
-                            Response response = optionalResponse.get();
-                            server.sendResponse(response, key);
+                                            optionalResponse = serverInvoker.execute(request);
 
+
+                                        if (optionalResponse.isPresent()) {
+                                            Response response = optionalResponse.get();
+                                            server.sendResponse(response, key);
+                                        }
+                                    }
+                                }
+                                ForkJoinPool forkJoinPool = ForkJoinPool.commonPool();
+                                forkJoinPool.invoke(new Action2());
+                            }
                         }
                     }
+                    ForkJoinPool forkJoinPool = ForkJoinPool.commonPool();
+                    forkJoinPool.invoke(new Action());
                 }
             }
         }
     }
+
     private static int parseComment() {
         try {
             String comment = "";

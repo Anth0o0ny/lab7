@@ -5,7 +5,6 @@ public class StringConstants {
     public class StartTreatment {
         public final static String START_HELPER = "Для вывода справки по командам введите help.";
         public final static String COMMAND_NOT_EXISTS = "Команды не существует.";
-        public final static String PARSE_FAILED = "Не удалось распарсить.";
         public final static String ENTER_COMMAND = "Введите команду:";
         public final static String EXECUTE_FAILED = "В файле найдена несуществующая команда. Выполнение прекращено.";
         public final static String COLLECTION_INPUT_NOT_EXISTS = "Файл с входной коллекцией не найден или недостаточно прав.";
@@ -78,7 +77,6 @@ public class StringConstants {
         public final static String RECEIVER_UPDATE_WRONG_RESULT = "Объект с указанным id не найден.";
         public final static String RECEIVER_INSERT_AT_RESULT = "Элемент внесен в коллекцию.";
         public final static String RECEIVER_INSERT_AT_WRONG_RESULT = "Введен некорректный индекс.";
-        public final static String RECEIVER_SAVE_RESULT = "Коллекция успешно сохранена.";
     }
 
     public class Client {
@@ -86,11 +84,11 @@ public class StringConstants {
         public final static String CONNECT_FAILED = "Ошибка создания сокета. Сервер не может начать работу.";
         public final static String RECONNECT = "Переподключение к серверу...";
         public final static String RECONNECT_TRYNUMBER = "Попытка № ";
-        public final static String RECONNECT_AGAIN = "Продолжить подключение? Введите 'Yes' или 'No' с заглавной буквы.";
+        public final static String RECONNECT_AGAIN = "Продолжить подключение? Введите 'n', чтобы прекратить или любую клавишу, чтобы продолжить.";
         public final static String SEND_REQUEST_FAILED = "Невозможно создать запрос.";
         public final static String SEND_REQUEST_CANT_CONNECT = "Сервер недоступен.";
         public final static String GET_RESPONSE_FAILED = "Ошибка получения данных с сервера.";
-        public final static String GET_RESPONSE_WRONG_INFO = "Некорреткные данные с сервера.";
+        public final static String GET_RESPONSE_WRONG_INFO = "Некорректные данные с сервера.";
         public final static String CLIENT_END_WORK =  "Клиент закончил работу.";
 
 

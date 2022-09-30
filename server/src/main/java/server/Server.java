@@ -8,6 +8,7 @@ import java.io.*;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.*;
+import java.util.concurrent.RecursiveAction;
 
 public class Server {
 //    private final Integer PORT = 8013;
@@ -53,19 +54,22 @@ public class Server {
     }
 
     public void sendResponse(Response response, SelectionKey key){
-        SocketChannel socketChannel = (SocketChannel) key.channel();
-        try{
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
-            objectOutputStream.writeObject(response);
+        new Thread(()->{
+            SocketChannel socketChannel = (SocketChannel) key.channel();
+            try{
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+                objectOutputStream.writeObject(response);
 
-            socketChannel.write(ByteBuffer.wrap((byteArrayOutputStream.toByteArray())));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                socketChannel.write(ByteBuffer.wrap((byteArrayOutputStream.toByteArray())));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     public Request readRequest(SelectionKey key) {
+
         Request request = null;
         SocketChannel socketChannel = (SocketChannel) key.channel();
         ByteBuffer buffer = ByteBuffer.allocate(BUFFER_SIZE);

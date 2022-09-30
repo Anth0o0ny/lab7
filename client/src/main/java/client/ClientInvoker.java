@@ -17,7 +17,7 @@ public class ClientInvoker {
         commandsMap.put(commandName, command);
     }
 
-    public Optional<Request> check(String commandName, String argument) throws JAXBException {
+    public Optional<Request> check(String commandName, String argument){
         if (this.commandsMap.containsKey(commandName))
             return this.commandsMap.get(commandName).execute(argument);
 

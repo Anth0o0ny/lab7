@@ -25,7 +25,7 @@ public class ServerInvoker {
         }
     }
 
-    public Optional<Response> execute(Request request) throws JAXBException {
+    public Optional<Response> execute(Request request){
         String commandName = request.getCommandName();
         if (request.getLogin() == null || request.getPassword() == null
                 || request.getLogin().equals("") && !commandName.equals("authorization")) {
