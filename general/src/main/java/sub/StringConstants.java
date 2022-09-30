@@ -132,7 +132,7 @@ public class StringConstants {
         public final static String WRONG_CLEAR = "Нет прав для удаления элемента коллекции.";
         public final static String INVALID_ID = "Клиент передал невалидный id.";
         public final static String FILM_DELETE_SUCCESS = ": фильм с данным id удален.";
-        public final static String CANT_DELETE_FILM = "Ошибка удаления по id";
+        public final static String CANT_DELETE_FILM = "Ошибка удаления по id. Недостаточно прав.";
         public final static String FILM_ADDED = "Фильм добавлен. id = ";
         public final static String WRONG_FILM_ADDED = "Фильм с таким же именем уже есть.";
         public final static String INVALID_INDEX = "Клиент передал невалидный индекс.";

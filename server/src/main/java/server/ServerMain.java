@@ -4,7 +4,7 @@ import interaction.Request;
 import interaction.Response;
 import sub.StringConstants;
 
-import javax.xml.bind.JAXBException;
+
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
 import java.util.Iterator;
@@ -51,7 +51,7 @@ public class ServerMain {
             Set<SelectionKey> keys = server.getSelector().selectedKeys();
             Iterator iterator = keys.iterator();
             while (iterator.hasNext()) {
-                if (parseComment() == 0) {
+                if (parseComment()) {
                     return;
                 } else {
                 }
@@ -64,24 +64,26 @@ public class ServerMain {
                         @Override
                         protected void compute() {
                             Request request = server.readRequest(key);
-                            if (request != null) {
-                                class Action2 extends RecursiveAction {
-                                    @Override
-                                    protected void compute() {
-                                        Optional<Response> optionalResponse = null;
+                            if (request == null) {
+                                disconnectClient();
+                                return;
+                            }
+                            class Action2 extends RecursiveAction {
+                                @Override
+                                protected void compute() {
+                                    Optional<Response> optionalResponse = null;
 
-                                            optionalResponse = serverInvoker.execute(request);
+                                        optionalResponse = serverInvoker.execute(request);
 
 
-                                        if (optionalResponse.isPresent()) {
-                                            Response response = optionalResponse.get();
-                                            server.sendResponse(response, key);
-                                        }
+                                    if (optionalResponse.isPresent()) {
+                                        Response response = optionalResponse.get();
+                                        server.sendResponse(response, key);
                                     }
                                 }
-                                ForkJoinPool forkJoinPool = ForkJoinPool.commonPool();
-                                forkJoinPool.invoke(new Action2());
                             }
+                            ForkJoinPool forkJoinPool = ForkJoinPool.commonPool();
+                            forkJoinPool.invoke(new Action2());
                         }
                     }
                     ForkJoinPool forkJoinPool = ForkJoinPool.commonPool();
@@ -91,15 +93,19 @@ public class ServerMain {
         }
     }
 
-    private static int parseComment() {
+    private static void disconnectClient() {
+        System.out.println("Клиент отключен.");
+    }
+
+    private static boolean parseComment() {
         try {
             String comment = "";
             if (System.in.available() > 0) {
                 comment = (new Scanner(System.in)).nextLine();
             }
-            return comment.compareTo("exit");
+            return comment.equals("exit");
         } catch (IOException | NullPointerException e) {
-            return 0;
+            return false;
         }
     }
 }

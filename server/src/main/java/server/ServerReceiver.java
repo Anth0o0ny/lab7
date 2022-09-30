@@ -11,6 +11,7 @@ import sub.StringConstants;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLOutput;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -31,8 +32,6 @@ public class ServerReceiver {
     }
 
     public Response authorization(String login, String password) {
-
-
 
             if (login.isEmpty()) {
                 return new Response(StringConstants.Server.LOGIN_EMPTY);

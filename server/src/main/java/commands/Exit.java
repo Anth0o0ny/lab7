@@ -15,6 +15,7 @@ public class Exit extends ServerCommand{
 
     @Override
     public Optional<Response> execute(Request arg) {
+        System.exit(0);
         return Optional.empty();
     }
 

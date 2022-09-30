@@ -1,6 +1,7 @@
 package interaction;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 public class Response implements Serializable {
 
@@ -21,6 +22,7 @@ public class Response implements Serializable {
     public Response(String[] answer) {
         this(null, answer);
     }
+
 
     public String[] getAnswer() {
         return answer;
