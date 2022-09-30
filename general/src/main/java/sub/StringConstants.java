@@ -3,12 +3,16 @@ package sub;
 public class StringConstants {
 
     public class StartTreatment {
-        public final static String START_HELPER = "Для вывода справки по командам введите help.";
         public final static String COMMAND_NOT_EXISTS = "Команды не существует.";
         public final static String ENTER_COMMAND = "Введите команду:";
         public final static String EXECUTE_FAILED = "В файле найдена несуществующая команда. Выполнение прекращено.";
-        public final static String COLLECTION_INPUT_NOT_EXISTS = "Файл с входной коллекцией не найден или недостаточно прав.";
-        public final static String COLLECTION_OUTPUT_NOT_EXISTS = "Файл для сохранения коллекции не найден.";
+        public final static String AUTH_ENTER_LOGIN = "Введите логин:";
+        public final static String AUTH_ENTER_PASS = "Введите пароль:";
+
+        public final static String ASK_TO_AUTH = "Вы хотите авторизоваться? ";
+        public final static String Y_OR_N = "[y/n]";
+        public final static String ENTER_IN_SYSTEM_BY_NAME = "Вы вошли в систему под именем:";
+        public final static String ENTER_IN_SYSTEM_BY_GUEST = "Вы вошли в систему как гость";
     }
 
     public class Commands {
@@ -102,5 +106,36 @@ public class StringConstants {
         public final static String CHANNEL_REGISTERED = "Канал зарегистрирован. ";
         public final static String CHANNEL_REGISTER_CANCELED = "Ошибка в регистрации канала.";
         public final static String READ_REQUEST_FAILED = "Ошибка получения запроса от клиента.";
+
+        public final static String WRONG_CONNECT_TO_BASE = "Ошибка при обращении к базе данных при создании таблицы movies";
+        public final static String WRONG_ADD_CONNECT_TO_BASE =  "Ошибка при обращении к базе данных при добавлении города.";
+        public final static String INVALID_MOVIES_IN_BASE = "В базе данных обнаружен невалидный фильм.";
+        public final static String CANT_READ_FROM_BASE = "Ошибка при обращении к базе данных при чтении содержимого.";
+        public final static String CANT_READ_FROM_CLEAR = "Ошибка при обращении к базе данных при очистке коллекции пользователем.";
+        public final static String CANT_READ_FROM_REMOVE_BY_ID = "Ошибка при обращении к базе данных при удалении города по его id.";
+        public final static String CANT_READ_FROM_UPDATE = "Ошибка при обращении к базе данных при обновлении города.";
+
+        public final static String WRONG_CREATE_TABLE_USER = "Ошибка при обращении к базе данных при создании таблицы users.";
+        public final static String WRONG_ADD_TABLE_USER = "Ошибка при обращении к базе данных при добавлении пользователя.";
+        public final static String WRONG_CHECK_TABLE_USER = "Ошибка при обращении к базе данных при проверке пользователя.";
+        public final static String WRONG_DELETE_TABLE_USER = "Ошибка при обращении к базе данных при удалении пользователя.";
+
+        public final static String CANT_CONNECT_TO_BASE = "Не удалось установить соединение с базой данных.";
+        public final static String CANT_CLOSE_CONNECTION = "Не удалось закрыть подключение.";
+        public final static String CANT_CLOSE_STATEMENT = "Не удалось закрыть состояние statement.";
+
+        public final static String CANT_EXECUTE_NOT_AUTH = "Выполнение команд не доступно неавторизованным пользователям.\nВведите authorization, чтобы зарегистрироваться в системе";
+
+        public final static String LOGIN_EMPTY = "Имя пользователя не может быть пустой строкой.";
+        public final static String WRONG_HASH = "Не удалось хэшировать пароль";
+        public final static String WRONG_PASS_TO_LOGIN = " : введен неверный пароль для логина";
+        public final static String WRONG_CLEAR = "Нет прав для удаления элемента коллекции.";
+        public final static String INVALID_ID = "Клиент передал невалидный id.";
+        public final static String FILM_DELETE_SUCCESS = ": фильм с данным id удален.";
+        public final static String CANT_DELETE_FILM = "Ошибка удаления по id";
+        public final static String FILM_ADDED = "Фильм добавлен. id = ";
+        public final static String WRONG_FILM_ADDED = "Фильм с таким же именем уже есть.";
+        public final static String INVALID_INDEX = "Клиент передал невалидный индекс.";
+
     }
 }

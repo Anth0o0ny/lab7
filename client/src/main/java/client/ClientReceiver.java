@@ -44,7 +44,6 @@ public class ClientReceiver {
     }
 
     public Optional<Request> addIfMin() {
-        System.out.println("ClientReceiver addIfMin");
         return Optional.of(new Request("add_if_min", AddMovie.makeMovie()));
     }
 

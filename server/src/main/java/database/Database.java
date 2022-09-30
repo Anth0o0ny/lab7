@@ -1,6 +1,7 @@
 package database;
 
 import org.apache.commons.dbutils.DbUtils;
+import sub.StringConstants;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,7 +19,7 @@ public class Database {
         try{
             connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
         } catch (SQLException throwables) {
-            System.out.println("Не удалось установить соединение с базой данных.");;
+            System.out.println(StringConstants.Server.CANT_CONNECT_TO_BASE);
         }
         return connection;
     }
@@ -27,7 +28,7 @@ public class Database {
         try {
             DbUtils.close(connection);
         } catch (SQLException e) {
-            System.out.println("Не удалось закрыть подключение.");
+            System.out.println(StringConstants.Server.CANT_CLOSE_CONNECTION);
         }
     }
 
@@ -35,7 +36,7 @@ public class Database {
         try{
             DbUtils.close(preparedStatement);
         } catch (SQLException throwables) {
-            System.out.println("Не удалось закрыть состояние statement.");
+            System.out.println(StringConstants.Server.CANT_CLOSE_STATEMENT);
         }
     }
 }

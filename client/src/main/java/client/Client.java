@@ -10,12 +10,12 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Scanner;
 
 public class Client {
 
-//    private final int PORT = 8013;
     private final int PORT = Integer.parseInt(System.getenv("PORT"));
     private final int BUFFER_SIZE = 1048576;
     private Socket socket;
@@ -61,15 +61,15 @@ public class Client {
             System.out.println(StringConstants.Client.RECONNECT_TRYNUMBER + number);
             if (number % 3 == 0) {
                 System.out.println(StringConstants.Client.RECONNECT_AGAIN);
+                System.out.print(">");
                 Scanner input = new Scanner(System.in);
-                String choose = input.nextLine();
-                if (choose.equals("No")) {
+                String choose = input.nextLine().trim().toLowerCase(Locale.ROOT);
+                if (choose.equals("n")) {
                     return false;
                 }
             }
             number++;
         }
-
         return true;
     }
 
@@ -87,7 +87,7 @@ public class Client {
             socket.getOutputStream().write(sendArray);
         } catch (SocketException e){
             System.out.println(StringConstants.Client.SEND_REQUEST_CANT_CONNECT);
-            reconnect();
+//            reconnect();
         } catch (IOException e) {
             System.out.println(StringConstants.Client.SEND_REQUEST_FAILED);;
         }

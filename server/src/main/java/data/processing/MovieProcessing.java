@@ -3,6 +3,7 @@ package data.processing;
 import baseclasses.Movie;
 import data.dao.MovieDAO;
 import database.Database;
+import sub.StringConstants;
 
 import java.sql.*;
 import java.util.SortedSet;
@@ -20,7 +21,7 @@ public class MovieProcessing extends Database implements MovieDAO {
             preparedStatement = connection.prepareStatement(SQLMovie.INIT.QUERY);
             preparedStatement.executeUpdate();
         } catch (SQLException throwables) {
-            System.out.println("Ошибка при обращении к базе данных при создании таблицы movies");
+            System.out.println(StringConstants.Server.WRONG_CONNECT_TO_BASE);
         } finally {
             closeStatement(preparedStatement);
             closeConnection(connection);
@@ -56,8 +57,7 @@ public class MovieProcessing extends Database implements MovieDAO {
                 return result;
             }
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
-//            System.out.println("Ошибка при обращении к базе данных при добавлении города.");
+            System.out.println(StringConstants.Server.WRONG_ADD_CONNECT_TO_BASE);
         } finally {
           closeStatement(preparedStatement);
           closeConnection(connection);
@@ -93,14 +93,13 @@ public class MovieProcessing extends Database implements MovieDAO {
                     movie = new Movie(id, name, x, y, creationDate, oscarCount, budget, tagline, mpaaRating,
                             personName, height, hairColor, nationality, login);
                 } catch (NullPointerException ex) {
-                    System.out.println("В базе данных обнаружен невалидный фильм. Он немедленно будет удален.");
-//                    deleteInvalidMove(name);
+                    System.out.println(StringConstants.Server.INVALID_MOVIES_IN_BASE);
                 }
                 result.push(movie);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-//            System.out.println("Ошибка при обращении к базе данных при чтении содержимого.");
+            System.out.println(StringConstants.Server.CANT_READ_FROM_BASE);
             return new Stack<>();
         } finally {
             closeStatement(preparedStatement);
@@ -118,7 +117,7 @@ public class MovieProcessing extends Database implements MovieDAO {
             preparedStatement.setString(1, login);
             result = preparedStatement.executeQuery().next();
         } catch (SQLException throwables) {
-            System.out.println("Ошибка при обращении к базе данных при очистке коллекции пользователем.");
+            System.out.println(StringConstants.Server.CANT_READ_FROM_CLEAR);
         } finally {
             closeStatement(preparedStatement);
             closeConnection(connection);
@@ -136,7 +135,7 @@ public class MovieProcessing extends Database implements MovieDAO {
             preparedStatement.setString(2, login);
             result = preparedStatement.executeQuery().next();
         } catch (SQLException throwables) {
-            System.out.println("Ошибка при обращении к базе данных при удалении города по его id.");
+            System.out.println(StringConstants.Server.CANT_READ_FROM_REMOVE_BY_ID);
         } finally {
             closeStatement(preparedStatement);
             closeConnection(connection);
@@ -154,7 +153,7 @@ public class MovieProcessing extends Database implements MovieDAO {
            preparedStatement.setString(2, login);
            result = preparedStatement.executeQuery().next();
        } catch (SQLException throwables) {
-           System.out.println("Ошибка при обращении к базе данных при очистке коллекции пользователем.");
+           System.out.println(StringConstants.Server.CANT_READ_FROM_CLEAR);
        } finally {
            closeStatement(preparedStatement);
            closeConnection(connection);
@@ -184,8 +183,7 @@ public class MovieProcessing extends Database implements MovieDAO {
             preparedStatement.setString(14, login);
             result = preparedStatement.executeQuery().next();
         } catch (SQLException throwables) {
-                throwables.printStackTrace();
-//            System.out.println("Ошибка при обращении к базе данных при обновлении города.");
+            System.out.println(StringConstants.Server.CANT_READ_FROM_UPDATE);
         } finally {
             closeStatement(preparedStatement);
             closeConnection(connection);

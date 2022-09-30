@@ -2,6 +2,7 @@ package data.processing;
 
 import data.dao.UserDAO;
 import database.Database;
+import sub.StringConstants;
 
 import java.sql.*;
 
@@ -17,7 +18,7 @@ public class UserProcessing extends Database implements UserDAO {
             preparedStatement = connection.prepareStatement(SQLUser.INIT.QUERY);
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
-            System.out.println("Ошибка при обращении к базе данных при создании таблицы users.");;
+            System.out.println(StringConstants.Server.WRONG_CREATE_TABLE_USER);;
         } finally {
             closeStatement(preparedStatement);
             closeConnection(connection);
@@ -36,7 +37,7 @@ public class UserProcessing extends Database implements UserDAO {
             preparedStatement.setString(2, password);
             result =preparedStatement.executeQuery().next();
         } catch (SQLException e) {
-            System.out.println("Ошибка при обращении к базе данных при добавлении пользователя.");;
+            System.out.println(StringConstants.Server.WRONG_ADD_TABLE_USER);
         } finally {
           closeStatement(preparedStatement);
           closeConnection(connection);
@@ -54,7 +55,7 @@ public class UserProcessing extends Database implements UserDAO {
             preparedStatement.setString(2, password);
             result = preparedStatement.executeQuery().next();
         } catch (SQLException throwables) {
-            System.out.println("Ошибка при обращении к базе данных при проверке пользователя.");;
+            System.out.println(StringConstants.Server.WRONG_CHECK_TABLE_USER);
         } finally {
             closeStatement(preparedStatement);
             closeConnection(connection);
@@ -77,7 +78,7 @@ public class UserProcessing extends Database implements UserDAO {
                 return false;
             }
         } catch (SQLException throwables) {
-            System.out.println("Ошибка при обращении к базе данных при проверке пользователя.");;
+            System.out.println(StringConstants.Server.WRONG_CHECK_TABLE_USER);
         } finally {
             closeStatement(preparedStatement);
             closeConnection(connection);
@@ -95,7 +96,7 @@ public class UserProcessing extends Database implements UserDAO {
             preparedStatement.setString(2, password);
             result = preparedStatement.executeQuery().next();
         } catch (SQLException throwables) {
-            System.out.println("Ошибка при обращении к базе данных при удалении пользователя.");;
+            System.out.println(StringConstants.Server.WRONG_DELETE_TABLE_USER);
         } finally {
             closeStatement(preparedStatement);
             closeConnection(connection);

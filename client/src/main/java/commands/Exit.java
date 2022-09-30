@@ -18,7 +18,6 @@ public class Exit extends ClientCommand{
             System.out.println(StringConstants.Commands.CMD_WITHOUT_ARG);
             return Optional.empty();
         }
-        System.out.println("Спасибо за работу");
         throw new NoSuchElementException();
     }
 }

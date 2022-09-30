@@ -5,7 +5,6 @@ import interaction.Request;
 import interaction.Response;
 import sub.StringConstants;
 
-import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Locale;
@@ -22,13 +21,12 @@ public class Terminal {
     private String login = "";
     private String password = "";
 
-
     public Terminal(ClientInvoker clientInvoker, Client client) {
         this.clientInvoker = clientInvoker;
         this.client = client;
     }
 
-    public void startFile(String filename) throws JAXBException {
+    public void startFile(String filename){
         setScanner(filename);
         if (scanner == null) {
             System.out.println(StringConstants.Commands.EXECUTE_FILE_NOT_EXISTS);
@@ -60,13 +58,14 @@ public class Terminal {
         }
     }
 
-    public void inputKeyboard() throws JAXBException, NoSuchElementException {
+    public void inputKeyboard() throws NoSuchElementException {
         this.scanner = new Scanner(System.in);
 
 
-        helloUser();
+       helloUser();
 
         while (true) {
+
             System.out.println(StringConstants.StartTreatment.ENTER_COMMAND);
             System.out.print(">");
             String commandLine = scanner.nextLine();
@@ -83,9 +82,12 @@ public class Terminal {
                         scanner = new Scanner(System.in);
                         continue;
                     }
+
                     request.setLogin(login);
                     request.setPassword(password);
                     client.sendRequest(request);
+
+
 
                     Optional<Response> optionalResponse = client.getResponse();
                     if (optionalResponse.isPresent()) {
@@ -96,13 +98,14 @@ public class Terminal {
                     System.out.println(StringConstants.StartTreatment.COMMAND_NOT_EXISTS);
                 }
             } else {
+
                 client.reconnect();
-                inputKeyboard();
+
             }
         }
     }
 
-    protected Optional<Request> lineParseToCommand(String line) throws JAXBException {
+    protected Optional<Request> lineParseToCommand(String line){
 
         String[] cmdline = line.trim().split(" ");
         String command = cmdline[0].trim();
@@ -116,10 +119,10 @@ public class Terminal {
     }
 
     private void authorization(){
-        System.out.println("Введите логин:");
+        System.out.println(StringConstants.StartTreatment.AUTH_ENTER_LOGIN);
         System.out.print(">");
         login = scanner.nextLine();
-        System.out.println("Введите пароль:");
+        System.out.println(StringConstants.StartTreatment.AUTH_ENTER_PASS);
         System.out.print(">");
         password = scanner.nextLine();
         Request authorizateRequest = new Request("authorization");
@@ -137,19 +140,19 @@ public class Terminal {
     }
 
     private void helloUser(){
-        System.out.println("Вы хотите авторизоваться? [y/n] ");
+        System.out.println(StringConstants.StartTreatment.ASK_TO_AUTH + StringConstants.StartTreatment.Y_OR_N);
         while (true) {
             System.out.print(">");
             String answer = scanner.nextLine().trim().toLowerCase(Locale.ROOT);
             if (answer.equals("y")){
                 authorization();
-                System.out.println("Вы вошли в систему под именем:" + login);
+                System.out.println(StringConstants.StartTreatment.ENTER_IN_SYSTEM_BY_NAME + login);
                 return;
             }else if (answer.equals("n")){
-                System.out.println("Вы вошли в систему как гость");
+                System.out.println(StringConstants.StartTreatment.ENTER_IN_SYSTEM_BY_GUEST);
                 return;
             }
-            System.out.println("[y/n]");
+            System.out.println(StringConstants.StartTreatment.Y_OR_N);
         }
     }
 

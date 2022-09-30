@@ -8,8 +8,6 @@ import data.processing.UserProcessing;
 import interaction.Response;
 
 import sub.StringConstants;
-
-import javax.lang.model.type.ArrayType;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -37,7 +35,7 @@ public class ServerReceiver {
 
 
             if (login.isEmpty()) {
-                return new Response("Имя пользователя не может быть пустой строкой.");
+                return new Response(StringConstants.Server.LOGIN_EMPTY);
             }
             try {
                 MessageDigest md = MessageDigest.getInstance("SHA-512");
@@ -49,8 +47,7 @@ public class ServerReceiver {
                 }
                 password = hashtext;
             } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-//            System.out.println("что-то с хэшированием");
+                System.out.println(StringConstants.Server.WRONG_HASH);
             }
 
             reentrantLock.lock();
@@ -58,7 +55,7 @@ public class ServerReceiver {
                 if (userProcessing.checkExists(login, password)) {
                     return new Response("");
                 } else if (userProcessing.checkImpostor(login, password)) {
-                   return new Response(login + " : введен неверный пароль для логина");
+                   return new Response(login + StringConstants.Server.WRONG_PASS_TO_LOGIN);
                 } else {
                     userProcessing.create(login, password);
                     return new Response("");
@@ -101,7 +98,7 @@ public class ServerReceiver {
                 collection.removeIf(movie -> movie.getLogin().equals(login));
                 return new Response(StringConstants.PatternCommands.RECEIVER_CLEAR_RESULT);
             } else {
-                return new Response("Нет прав");
+                return new Response(StringConstants.Server.WRONG_CLEAR);
             }
         } finally {
            reentrantLock.unlock();
@@ -175,13 +172,13 @@ public class ServerReceiver {
             try {
                 id = Long.parseLong(argument);
             } catch (NumberFormatException e) {
-                return new Response("Клиент передал невалидный id.");
+                return new Response(StringConstants.Server.INVALID_ID);
             }
             if (movieProcessing.removeById(id, login)) {
                 collection.removeIf(movie -> movie.getId().equals(id));
-                return new Response(id + ": фильм с данным id удален.");
+                return new Response(id + StringConstants.Server.FILM_DELETE_SUCCESS);
             } else {
-                return new Response("Ошибка удаления по id");
+                return new Response(StringConstants.Server.CANT_DELETE_FILM);
             }
         } finally {
             reentrantLock.unlock();
@@ -212,9 +209,9 @@ public class ServerReceiver {
                 movie.setId(id);
                 movie.setLogin(login);
                 collection.push(movie);
-                return new Response("фильм добавлен. id = " + id);
+                return new Response(StringConstants.Server.FILM_ADDED + id);
             } else {
-                return new Response("фильм с таким же именем уже есть.");
+                return new Response(StringConstants.Server.WRONG_FILM_ADDED);
             }
         } finally {
             reentrantLock.unlock();
@@ -246,7 +243,7 @@ public class ServerReceiver {
             try {
                 id = Long.parseLong(arg);
             } catch (NumberFormatException e) {
-                return new Response("Клиент передал невалидный id.");
+                return new Response(StringConstants.Server.INVALID_ID);
             }
             if (movieProcessing.update(id, movie, login)){
                 collection.removeIf(movieColl -> movieColl.getId().equals(id));
@@ -269,7 +266,7 @@ public class ServerReceiver {
             try {
                 index = Integer.parseInt(argument) - 1;
             } catch (NumberFormatException e){
-                return new Response("Клиент передал невалидный индекс.");
+                return new Response(StringConstants.Server.INVALID_INDEX);
             }
             if (index < 0 && (collection.size() - index > 0)){
                 return new Response(StringConstants.PatternCommands.RECEIVER_INSERT_AT_WRONG_RESULT);
@@ -279,12 +276,12 @@ public class ServerReceiver {
                     movie.setId(id);
                     movie.setLogin(login);
                     collection.insertElementAt(movie, index);
-                    return new Response("фильм с id = " + id + " добавлен в коллекцию на позицию = " + (index + 1)+
+                    return new Response("фильм с id = " + id + " добавлен в коллекцию на позицию = " + (index + 1) +
                             "\n" + "База данных не поддерживает вставку в конкретную позицию, поэтому в базу данных " +
                             "элемент добавлен последним.");
 
                 } else {
-                    return new Response("фильм с таким же именем уже есть.");
+                    return new Response(StringConstants.Server.WRONG_FILM_ADDED);
                 }
             }
         } finally {

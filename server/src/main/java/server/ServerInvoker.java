@@ -4,6 +4,7 @@ import commands.*;
 import interaction.Request;
 import interaction.Response;
 import sub.CommandsEnum;
+import sub.StringConstants;
 
 import javax.xml.bind.JAXBException;
 import java.util.HashMap;
@@ -29,7 +30,7 @@ public class ServerInvoker {
         String commandName = request.getCommandName();
         if (request.getLogin() == null || request.getPassword() == null
                 || request.getLogin().equals("") && !commandName.equals("authorization")) {
-            return Optional.of(new Response("Выполнение команд не доступно неавторизованным пользователям.\nВведите authorization, чтобы зарегестрироваться в системе"));
+            return Optional.of(new Response(StringConstants.Server.CANT_EXECUTE_NOT_AUTH));
         }
 
         return this.commandsMap.get(commandName).execute(request);

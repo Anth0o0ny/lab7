@@ -27,7 +27,6 @@ public class ExecuteScript extends ClientCommand{
         if (paths.add(path)) {
             return Optional.of(new Request("execute_script", arg));
         } else {
-            System.out.println("Обаружена рекурсия");
             return Optional.empty();
         }
     }

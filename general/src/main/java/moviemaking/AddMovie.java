@@ -14,22 +14,6 @@ import java.util.Stack;
 public class AddMovie {
 
 
-    public static String addMovie(Stack<Movie> collection) {
-        Movie makingMovie = makeMovie();
-        collection.push(makingMovie);
-        return StringConstants.MovieMaking.ADD_SUCCESS;
-    }
-
-    public static String AddMovieIfMin(Stack<Movie> collection) {
-        Movie makingMovie = makeMovie();
-        if (makingMovie.compareTo(Collections.min(collection)) < 0) {
-            collection.push(makingMovie);
-            return StringConstants.MovieMaking.ADD_SUCCESS;
-        } else {
-            return StringConstants.MovieMaking.ADD_FAIL;
-        }
-    }
-
     public static Movie makeMovie() {
 
         InputArgumentTester iat = new InputArgumentTester();

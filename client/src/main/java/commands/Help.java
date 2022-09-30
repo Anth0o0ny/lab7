@@ -14,7 +14,7 @@ public class Help extends ClientCommand{
     @Override
     public Optional<Request> execute(String arg) {
         if (arg != null){
-            System.out.println(CommandsEnum.HELP.name() + " : rb создать");
+            System.out.println(CommandsEnum.HELP.name());
             return Optional.empty();
         }
         return Optional.of(new Request("help"));
